@@ -23,7 +23,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // demo
+        // Route::pattern('id', '\d+');
+        // sau nay tat cac routes co param la "id" truyen len se dc tu dong validate ma ko can routes xu ly nua
 
         parent::boot();
     }

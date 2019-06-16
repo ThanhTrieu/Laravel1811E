@@ -15,3 +15,123 @@ Route::get('/', function () {
 	/* home page */
     return view('welcome');
 });
+
+Route::get('/home', function() {
+	// ::get() method cua routes - phuong thuc truy cap vao routes day
+	return "Hello word - home";
+});
+// Cac phuong thuc lam viec trong routes
+// 1- method get
+Route::get('/demo/laravel', function () {
+	return "This is method GET";
+});
+
+// 2- post
+Route::post('/demo-post', function() {
+	return "This is method post";
+});
+
+//3 - put
+Route::put('demo-put', function() {
+	return "this is method put";
+});
+
+//4 - match
+// cho phep 1 request co the lam viec voi nhieu cac phuong thuc truy vao routes
+Route::match(['get','post','put'],'demo-method', function() {
+	return "This is match method";
+});
+
+// 5- any
+// cho phep lam viec voi tat cac cac phuong thuc truy cap vao routes
+Route::any('demo-method-any', function () {
+	return "This is method any";
+});
+
+// truyen tham vao routes
+Route::get('sam-sung/{nameProduct}/{idPd}', function($name, $id){
+	// {nameProduct} : tham so bat buoc truyen vao tu url trinh duyet
+	// $name : bien dai dien cho tham so trong routes
+	return "Samsung - {$name} / ID - {$id}";
+});
+Route::get('iphone/{id}/{namePd?}', function($idPd,$name = null) {
+	// {namePd?} : tham so khong bat buoc
+	return "Iphone - {$name} / ID - {$idPd}";
+});
+
+// Routes view : Routes se tra ve 1 view html
+Route::view('/demo-view','demo');
+// demo : name file view
+
+// dieu huong - chuyen huong routes
+Route::get('xem-phim', function() {
+	return redirect('demo-view');
+	// header("Location:demo-view")
+});
+
+Route::redirect('/home','/');
+// khi vao /home se bi chuyen ve '/'
+
+// Regular Expression Constraints
+// kiem tra  - valiadte tham so cua routes
+Route::get('phim-hay/tap/{number}', function ($number) {
+	return "Ban dang xem phim-hay tap {$number}";
+})->where('number','\d+');
+
+Route::get('/phim/{nameFlim}/tap/{number}', function($name, $number) {
+	return "Ban dang xem phim {$name} - tap {$number}";
+})->where(['nameFlim' => '[A-Za-z0-9]+','number' => '\d+']);
+
+Route::get('/product/{id}', function($id) {
+	return "product - id {$id}";
+})->where('id','\d+')->name('product');
+
+Route::get('/music-lpop/{id}', function($id) {
+	return "music - id {$id}";
+})->where('id','\d+')->name('music');
+
+Route::get('nghe-nhac', function() {
+	return redirect()->route('music',['id' => 200]);
+});
+// get info url from routes
+Route::get('info-url', function(){
+
+	$url = route('music',['id' => 100]);
+	// tao ra duong link url
+	echo "<pre>";
+	print_r($url);
+});
+
+// Routes group - namespace - Prefixes of routes
+// Routes group : gom nhom cac routes thanh 1 nhom
+Route::group([
+	'prefix' => 'admin',
+	'namespace' => 'Test',
+	'as' => 'admin.'
+], function(){
+
+	Route::get('dashboard', function(){
+		return "This is admin dashboard";
+	})->name('dash');
+
+	Route::get('profile', function() {
+		//return "This is admin profile";
+		return redirect()->route('admin.dash');
+	})->name('pr');
+
+	Route::get('demo-namespace','DemoController@index')->name('demoNamespace');
+});
+
+
+// neu ma gap route loi thi mac dinh da ve 404 nhung muon ve trang khac thi khai bao cai nay
+Route::fallback(function () {
+    return redirect('/');
+});
+
+Route::get('xem-phim-kinh-di/{age}', function () {
+	return "ban da du tuoi xem phim";
+})->middleware('myCheckAge');
+
+
+
+
