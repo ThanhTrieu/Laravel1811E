@@ -132,6 +132,30 @@ Route::get('xem-phim-kinh-di/{age}', function () {
 	return "ban da du tuoi xem phim";
 })->middleware('myCheckAge');
 
+Route::get('kiem-tra-so-chan-le/{number}', function($number){
+	return "{$number} la so chan";
+	// :admin tham so cua middleware
+})->middleware('myCheckNumberOddEven:admin');
+
+Route::get('test-number', function(){
+	return "Test";
+});
+
+/* du dung routes va controller */
+Route::get('test-controller/{name}','TestController@demo')->name('testController');
+Route::get('test-demo','TestController@testDemo')->name('testDemo');
+Route::get('test-demo-2','TestController@index')->name('testDemo2');
+Route::get('profile/{name}/{id}', 'TestController@profile')->name('profile');
+Route::get('detail-profile/{id}','TestController@detailProfile')->name('detailProfile');
+
+Route::get('demo-login','TestController@login')->name('frmLogin');
+
+Route::post('handle-login','TestController@handleLogin')->name('handleLogin');
+
+
+Route::get('template-blade','TestController@template')->name('template');
+Route::get('test-home', 'TestController@testHome')->name('testHome');
+Route::get('test-about', 'TestController@testAbout')->name('testAbout');
 
 
 
