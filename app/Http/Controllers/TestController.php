@@ -67,11 +67,34 @@ class TestController extends Controller
     public function template()
     {
     	//return view('test-layout');
-    	$data = [
-    		'name' => 'abc',
-    		'age' => 29,
-    		'phone' => '9021423'
+        $data = [];
+    	$data['lstInfoStudent'] = [
+            [
+                'msv' => 113,
+        		'name' => 'abc',
+        		'age' => 29,
+        		'phone' => '9021423',
+                'money' => 1213232,
+                'gender' => 0
+            ],
+            [
+                'msv' => 114,
+                'name' => 'efwef',
+                'age' => 20,
+                'phone' => '9021423',
+                'money' => 2122,
+                'gender' => 1
+            ],
+            [
+                'msv' => 115,
+                'name' => 'efddasdwef',
+                'age' => 22,
+                'phone' => '9021423',
+                'money' => 2122323,
+                'gender' => 0
+            ]
     	];
+
     	return view('home.index',$data);
     }
 
