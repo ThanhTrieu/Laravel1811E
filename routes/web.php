@@ -157,5 +157,12 @@ Route::get('template-blade','TestController@template')->name('template');
 Route::get('test-home', 'TestController@testHome')->name('testHome');
 Route::get('test-about', 'TestController@testAbout')->name('testAbout');
 
+Route::group([
+	'prefix' => 'query',
+	'namespace' => 'Test',
+],function(){
+	Route::get('select','QueryController@select')->name('select');
+});
+
 
 
