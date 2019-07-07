@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 // su dung thu vien DB de thao tac voi database
 use Illuminate\Support\Facades\DB;
+// nap model vao controller
+use App\Models\Admin;
 
 class QueryController extends Controller
 {
@@ -84,6 +86,55 @@ class QueryController extends Controller
     	// SELECT a.title, b.content_web FROM posts AS a
     	// INNER JOIN contents AS b ON a.id = b.posts_id
     	// WHERE a.id = 5; 
+        
+        // insert data to table tags
+        /*
+        $insert = DB::table('tags')->insert([
+            'name' => 'Lap Trinh Laravel',
+            'slug' => 'lap-trinh-laravel',
+            'status' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => null
+        ]);
+         
+        if($insert){
+            dd('OK');
+        } else {
+            dd('ERR');
+        }
+        */
+       // update data to table tags
+       /*
+       $up = DB::table('tags')
+                ->where('id',6)
+                ->update([
+                    'name' => 'Lap Trinh PHP'
+                ]);
+        if($up){
+            dd('OK');
+        } else {
+            dd('ERR');
+        }
+        */
+       // delete data from table tags
+       /*
+       $del = DB::table('tags')
+                ->where('id',6)
+                ->delete();
+        if($del){
+            dd('OK');
+        } else {
+            dd('ERR');
+        }
+        */
+    }
 
+    public function demoOrm(Admin $admin)
+    {
+        // trieu goi ham lay du lieu tu phia model
+        $data = $admin->getAllData();
+        //dd($data);
+        $dt = $admin->getDataByCondition(1);
+        dd($dt);
     }
 }

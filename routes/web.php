@@ -102,27 +102,6 @@ Route::get('info-url', function(){
 	print_r($url);
 });
 
-// Routes group - namespace - Prefixes of routes
-// Routes group : gom nhom cac routes thanh 1 nhom
-Route::group([
-	'prefix' => 'admin',
-	'namespace' => 'Test',
-	'as' => 'admin.'
-], function(){
-
-	Route::get('dashboard', function(){
-		return "This is admin dashboard";
-	})->name('dash');
-
-	Route::get('profile', function() {
-		//return "This is admin profile";
-		return redirect()->route('admin.dash');
-	})->name('pr');
-
-	Route::get('demo-namespace','DemoController@index')->name('demoNamespace');
-});
-
-
 // neu ma gap route loi thi mac dinh da ve 404 nhung muon ve trang khac thi khai bao cai nay
 Route::fallback(function () {
     return redirect('/');
@@ -162,7 +141,31 @@ Route::group([
 	'namespace' => 'Test',
 ],function(){
 	Route::get('select','QueryController@select')->name('select');
+	Route::get('orm','QueryController@demoOrm')->name('orm');
 });
 
+/******************* Routes blog admin *********************/
+// Routes group - namespace - Prefixes of routes
+// Routes group : gom nhom cac routes thanh 1 nhom
+Route::group([
+	'prefix' => 'admin',
+	'namespace' => 'Admin',
+	'as' => 'admin.'
+], function(){
+	Route::get('/login','AccountController@viewLogin')->name('viewLogin')->middleware('isAdminLogined');
+	
+	Route::post('/handle-login', 'AccountController@handleLogin')->name('handleLogin');
+	Route::post('/logout','AccountController@logout')->name('logout');
+	
+});
 
+Route::group([
+	'prefix' => 'admin',
+	'namespace' => 'Admin',
+	'as' => 'admin.',
+	'middleware' => ['web','adminLogined']
+], function(){
+	Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+	
+});
 
