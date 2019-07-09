@@ -166,6 +166,8 @@ Route::group([
 	'middleware' => ['web','adminLogined']
 ], function(){
 	Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-	
+	Route::get('/list-posts', 'PostsController@index')->name('listPosts');
+	Route::get('/create-post', 'PostsController@createPost')->name('createPost');
+	Route::post('/handle-create-post','PostsController@handleCreatePost')->name('handlePost');
 });
 

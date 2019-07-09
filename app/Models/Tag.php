@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Tag extends Model
 {
-    protected $table = 'categories';
+    protected $table = 'tags';
 
-    public function getAllDataCategories()
+    public function getAllDataTags()
     {
     	$result = [];
-    	$data = Category::all();
+    	$data = Tag::all();
     	if($data){
     		$result = $data->toArray();
     	}
