@@ -171,5 +171,6 @@ Route::group([
 	Route::post('/handle-create-post','PostsController@handleCreatePost')->name('handlePost');
 	Route::post('/delete-post','PostsController@deletePost')->name('deletePost');
 	Route::get('{slug}/{id}','PostsController@editPost')->name('editPost');
+	Route::post('handle-edit/{id}','PostsController@handleEdit')->name('handleEdit');
 });
 

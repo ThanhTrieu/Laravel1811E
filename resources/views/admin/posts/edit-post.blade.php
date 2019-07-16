@@ -22,7 +22,7 @@
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 		<h5>Chinh sua bai viet</h5>
 		
-{{-- 		@if ($errors->any())
+		@if ($errors->any())
 		    <div class="alert alert-danger my-3">
 		        <ul>
 		            @foreach ($errors->all() as $error)
@@ -30,9 +30,15 @@
 		            @endforeach
 		        </ul>
 		    </div>
-		@endif --}}
+		@endif
 
-		<form action="" method="post" class="mt-3 w-100" enctype="multipart/form-data">
+		@if($errUpload)
+			<div class="alert alert-danger my-3">
+				{{ $errUpload }}
+			</div>
+		@endif
+
+		<form action="{{ route('admin.handleEdit',['id'=>$post->id]) }}" method="post" class="mt-3 w-100" enctype="multipart/form-data">
 			@csrf
 			<div class="row">
 				<div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
@@ -86,9 +92,9 @@
 					</div>
 					<div class="form-group">
 						<label> <b>Publish</b> </label>
-						<input type="checkbox" class="ml-3" checked="checked" name="publishPost">
+						<input type="checkbox" class="ml-3" {{ $post->status == 1 ? 'checked=checked' : '' }} name="publishPost">
 					</div>
-					<button class="btn btn-primary" type="submit"> Save</button>
+					<button class="btn btn-primary" type="submit"> Update</button>
 				</div>
 			</div>
 		</form>

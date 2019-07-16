@@ -4,8 +4,17 @@
 @section('content')
 <div class="row">
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-		<h5>Danh sach bai viet</h5>
-		<a href="{{ route('admin.createPost') }}" class="btn btn-primary">Dang tin - viet bai</a>
+		<h4 class="text-left mb-3">Danh sach bai viet</h4>
+		<div class="row">
+			<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+				<a href="{{ route('admin.createPost') }}" class="btn btn-primary">Dang tin - viet bai</a>
+			</div>
+			<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+				<input type="text" id="txtKeyword" class="w-75 h-100 ml-5" placeholder="tim kiem bai viet ..." value="{{ $keyword }}">
+				<button type="button" class="btn-primary btn float-right" id="btnSearch"> Tim kiem</button>
+			</div>
+		</div>
+		<div class="clearfix"></div>
 
 		<table class="table mt-3">
 			<thead>
@@ -43,6 +52,15 @@
 
 @push('scripts')
 <script type="text/javascript">
+	$(function(){
+		$('#btnSearch').click(function() {
+			let keyword = $('#txtKeyword').val().trim();
+			if(keyword.length > 0){
+				window.location.href = "{{ route('admin.listPosts') }}" + "?keyword=" + keyword;
+			}
+		});
+	});
+
 	function deletePost(idPost){
 		if(Number.isInteger(idPost)){
 			$.ajax({

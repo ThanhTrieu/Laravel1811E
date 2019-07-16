@@ -10,19 +10,29 @@ use App\Http\Requests\StorePosts as Posts;
 use voku\helper\AntiXSS;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UpdatePosts;
 
 class PostsController extends Controller
 {
-    public function index()
+    public function index(Request $request, AntiXSS $xss)
     {
         $data = [];
+        $keyword = $request->keyword;
+        $keyword = $xss->xss_clean($keyword);
+
         $listPosts = DB::table('posts AS p')
                                 ->select('p.id','p.title','p.slug','p.sapo','p.publish_date', 'c.name', 'c.id AS cate_id')
                                 ->join('categories AS c', 'p.categories_id', '=', 'c.id')
+                                ->where(function($query) use ($keyword){
+                                    $query->where('p.title', 'LIKE', "%{$keyword}");
+                                    $query->orWhere('p.sapo', 'LIKE', '%'.$keyword.'%');
+                                    $query->orWhere('p.publish_date', 'LIKE', '%'.$keyword.'%');
+                                })
                                 ->where('p.status',1)
                                 ->get();
 
         $data['listPosts'] = json_decode($listPosts, true);
+        $data['keyword'] = $keyword;
 
     	return view('admin.posts.list-post',$data);
     }
@@ -164,13 +174,132 @@ class PostsController extends Controller
 
             $data['post_tag'] = json_decode($post_tag,true);
 
+            $data['post_tag2'] = [];
             foreach($data['post_tag'] as $key => $val){
                 $data['post_tag2'][] = $val['tags_id'];
             }
+
+            // thong bao loi upload anh 
+            $data['errUpload'] = $request->session()->get('errImg');
+
             return view('admin.posts.edit-post', $data);
         } else {
             // not found page
             abort(404);
         }
+    }
+
+    public function handleEdit($id, UpdatePosts $request)
+    {
+        $infoPost = DB::table('posts AS p')
+                    ->select('p.*', 'c.content_web')
+                    ->join('contents AS c', 'p.id' , '=', 'c.posts_id')
+                    ->where('p.id', $id)
+                    ->first();
+
+        if($infoPost){           
+            $title = $request->titlePost;
+            $slug = Str::slug($title, '-');
+            $sapoPost = $request->sapoPost;
+            $contentPost = $request->contentPost;
+            $language = $request->language;
+            $categories = $request->categories;
+            $tags = $request->tags;
+
+            // thuc hien upload file(nguoi dung muon thay doi anh avatar)
+            // anh cu - neu nguoi dung ko upload anh thi update lai dung la anh avatar cu
+            $avatar = $infoPost->avatar;
+            $arrAllowTypeImg = ['image/jpeg','image/png','image/jpg','image/gif','image/bmp'];
+
+            // nguoi dung muon thay anh avatar
+            if($request->hasFile('avatarPost')){
+                 if($request->file('avatarPost')->isValid()){
+                    // kiem tra dinh dang anh
+                    // lay ra dinh dang anh
+                    $file = $request->file('avatarPost');
+                    $typeImg = $file->getClientMimeType();
+                    if(in_array($typeImg, $arrAllowTypeImg)){
+                        // cho upload
+                        // gan lai ten anh moi
+                        $avatar = $file->getClientOriginalName();
+                        $file->move('upload/images', $avatar);
+                    } else {
+                        // khong cho upload
+                        $request->session()->flash('errImg','Dinh danh anh khong dung');
+                        // quay ve lai dung form edit
+                        return redirect()->route('admin.editPost',[
+                            'slug' => $infoPost->slug,
+                            'id' => $id
+                        ]);
+                    }
+                 }
+            }
+
+            $publish = $request->publishPost;
+            $status = $infoPost->status;
+            $publishDate = $infoPost->publish_date;
+
+            if($publish !== 'on'){
+                $status = 0;
+                // khong cho sua ngay xuat ban bai viet
+            }
+
+            // tien hanh update du lieu vao bang posts
+            DB::table('posts')
+                ->where('id', $id)
+                ->update([
+                    'title' => $title,
+                    'slug' => $slug,
+                    'sapo' => $sapoPost,
+                    'categories_id' => $categories,
+                    'avatar' => $avatar,
+                    'status' => $status,
+                    'lang_id' => $language,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+            // tien hanh update du lieu bang content
+            DB::table('contents')
+                ->where('posts_id', $id)
+                ->update([
+                    'content_web' => $contentPost,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+
+            // tien hanh update tags
+            if($tags && is_array($tags)){
+                // update du lieu
+                // xoa di du lieu da ton tai
+                DB::table('post_tag')
+                    ->where('posts_id', $id)
+                    ->delete();
+
+                // insert lai data
+                foreach ($tags as $key => $val) {
+                    DB::table('post_tag')->insert([
+                        'posts_id' => $id,
+                        'tags_id' => $val,
+                        'primary' => 0,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => null
+                    ]);
+                }
+
+            } else {
+                // xoa du lieu
+                DB::table('post_tag')
+                    ->where('posts_id', $id)
+                    ->delete();
+            }
+
+            // quay ve trang list posts
+            return redirect()->route('admin.listPosts');
+
+        } else {
+            // ko thay bai viet
+            return redirect()->route('admin.dashboard');
+        }
+        
+
     }
 }
