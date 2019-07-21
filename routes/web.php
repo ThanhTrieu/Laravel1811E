@@ -11,10 +11,11 @@
 |
 */
 
+/*
 Route::get('/', function () {
-	/* home page */
     return view('welcome');
 });
+*/
 
 Route::get('/home', function() {
 	// ::get() method cua routes - phuong thuc truy cap vao routes day
@@ -142,6 +143,14 @@ Route::group([
 ],function(){
 	Route::get('select','QueryController@select')->name('select');
 	Route::get('orm','QueryController@demoOrm')->name('orm');
+});
+
+/*************** Routes blog Frontend **********************/
+Route::group([
+	'namespace' => 'Frontend',
+	'as' => 'fr.'
+],function(){
+	Route::get('/','HomeController@index')->name('home');
 });
 
 /******************* Routes blog admin *********************/

@@ -174,6 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\CategoryServiceProvider::class,
+        App\Providers\LayoutBuildTreeCategoryServiceProvider::class,
 
     ],
 
@@ -225,6 +227,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'BuildCategory' => App\Helpers\Category\BuildCategory::class,
+        'BuildTreeCate' => App\Helpers\Common\BuildTreeCate::class,
 
     ],
 

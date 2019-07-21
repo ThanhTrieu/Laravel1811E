@@ -10,8 +10,9 @@
 				<a href="{{ route('admin.createPost') }}" class="btn btn-primary">Dang tin - viet bai</a>
 			</div>
 			<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-				<input type="text" id="txtKeyword" class="w-75 h-100 ml-5" placeholder="tim kiem bai viet ..." value="{{ $keyword }}">
 				<button type="button" class="btn-primary btn float-right" id="btnSearch"> Tim kiem</button>
+				<input type="text" id="txtKeyword" class="w-75 h-100 float-right" placeholder="tim kiem bai viet ..." value="{{ $keyword }}">
+				
 			</div>
 		</div>
 		<div class="clearfix"></div>
@@ -46,6 +47,12 @@
 				@endforeach
 			</tbody>
 		</table>
+		<div class="row justify-content-center border-top py-3">
+			{{-- hien thi phan trang voi teamplate la bootstrap --}}
+			{{-- phan trang + tim kiem --}}
+			{{-- appends them nhung param query string vao phan trang --}}
+			{{ $paginate->appends(request()->query())->links() }}
+		</div>
 	</div>
 </div>
 @endsection
