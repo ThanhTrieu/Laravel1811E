@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Categories;
 use App\Models\Tag;
 use App\Http\Requests\StorePosts as Posts;
 use voku\helper\AntiXSS;
@@ -43,7 +43,7 @@ class PostsController extends Controller
     	return view('admin.posts.list-post',$data);
     }
 
-    public function createPost(Category $cate, Tag $tag)
+    public function createPost(Categories $cate, Tag $tag)
     {
     	// lay all data tu bang category do ra view
     	$data = [];
@@ -160,7 +160,7 @@ class PostsController extends Controller
         }
     }
 
-    public function editPost($slug, $id, Request $request, Category $cate, Tag $tag)
+    public function editPost($slug, $id, Request $request, Categories $cate, Tag $tag)
     {
         $id = is_numeric($id) && $id > 0 ? $id : 0;
         // lay du lieu theo id cua bai viet

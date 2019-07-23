@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="{{ asset('frontend/fonts/fontawesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/fonts/flaticon/font/flaticon.css') }}">
 
-    <!-- Theme Style -->
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
 
     @stack('stylesheets')
@@ -26,8 +25,11 @@
 
     <div class="wrap">
       @include('frontend.partials.header')
-
-      @include('frontend.partials.slider')
+      
+      @if($info['homePage'] === 'fr.home')
+      {{-- chi trang home moi goi layout nay --}}
+        @include('frontend.partials.slider')
+      @endif
 
       <section class="site-section py-sm">
         <div class="container">
@@ -40,7 +42,7 @@
             <div class="col-md-12 col-lg-8 main-content">
               @yield('content')
             </div>
-            <!-- END main-content -->
+
 
             <div class="col-md-12 col-lg-4 sidebar">  
               @include('frontend.partials.popular')
@@ -49,7 +51,7 @@
 
               @include('frontend.partials.tags')
             </div>
-            <!-- END sidebar -->
+
           </div>
         </div>
       </section>
