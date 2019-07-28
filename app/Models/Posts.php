@@ -37,12 +37,64 @@ class Posts extends Model
     {
     	// $arrId : id cua 3 bai viet moi nhat noi bat
     	$posts = DB::table('posts as p')
-    	           ->select('p.id','p.title','p.sapo','p.publish_date','p.avatar','a.username','a.id as user_id')
+    	           ->select('p.id','p.title','p.slug','p.sapo','p.publish_date','p.avatar','a.username','a.id as user_id')
     	           ->join('admins as a', 'a.id', '=', 'p.user_id')
     	           ->where('p.status', 1)
     	           ->whereNotIn('p.id', $arrId)
     	           ->orderBy('p.publish_date', 'DESC')
     	           ->paginate(2);
     	return $posts;
+    }
+
+    public function getDataPopularPosts()
+    {
+        $posts = Posts::select('id','title','slug','publish_date','avatar')
+                      ->where('status',1)
+                      ->limit(3)
+                      ->orderBy('view_count','DESC')
+                      ->get();
+        return $posts;
+    }
+
+    public function getDataPostById($id)
+    {
+        $data = Posts::select('posts.id','posts.status','posts.title','posts.sapo','posts.publish_date','posts.avatar','posts.slug','posts.categories_id','contents.content_web','categories.name as cate_name','admins.username')
+                ->join('contents', 'contents.posts_id', '=', 'posts.id')
+                ->join('categories', 'categories.id','=','posts.categories_id')
+                ->join('admins','admins.id', '=', 'posts.user_id')
+                ->where('posts.id',$id)
+                ->where('posts.status',1)
+                ->first();
+        return $data;
+    }
+
+    public function getDataTagsByPostId($id)
+    {
+        $data = DB::table('tags as t')
+                ->select('t.name as name_tag','t.id as tag_id','t.slug as slug_tag')
+                ->join('post_tag as pt','pt.tags_id','=','t.id')
+                ->where('pt.posts_id',$id)
+                ->get();
+        return $data;
+    }
+
+    public function getDataRelatedPost($id, $idCate)
+    {
+        $data = DB::table('posts as p')
+                    ->select('p.id','p.title','p.slug','p.avatar','p.publish_date', 'c.name as name_cate', 'c.slug as cate_slug', 'c.id as cate_id')
+                    ->join('categories as c','c.id','=','p.categories_id')
+                    ->where('p.categories_id', $idCate)
+                    ->where('p.id', '<>', $id)
+                    ->limit(3)
+                    ->get();
+        return $data;
+    }
+
+    public function updateViewCount($id, $count)
+    {   
+        $count++;
+        DB::table('posts')
+            ->where('id',$id)
+            ->update(['view_count' => $count]);
     }
 }

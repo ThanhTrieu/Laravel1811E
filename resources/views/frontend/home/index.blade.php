@@ -7,7 +7,7 @@
 <div class="row">
   @foreach($lastestPosts as $key => $item)
   <div class="col-md-6">
-    <a href="#" class="blog-entry element-animate" data-animate-effect="fadeIn">
+    <a href="{{ route('fr.detail',['slug'=>$item['slug'], 'id'=>$item['id']]) }}" class="blog-entry element-animate" data-animate-effect="fadeIn">
       <img style="max-height: 250px;" src="{{ URL::to('/') }}/upload/images/{{ $item['avatar'] }}" alt="{!! $item['title'] !!}">
 
       <div class="blog-content-body">

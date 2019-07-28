@@ -9,10 +9,11 @@ use App\Helpers\Common\BuildTreeCate;
 use Illuminate\Support\Facades\Route;
 use App\Models\Categories;
 use App\Models\Tag;
+use App\Models\Posts;
 
 class FrontendController extends Controller
 {
-    public function __construct(Categories $cate, Tag $tag)
+    public function __construct(Categories $cate, Tag $tag, Posts $posts)
     {
 
     	$data = [];
@@ -30,7 +31,12 @@ class FrontendController extends Controller
     	// share du lieu cho tat ca cac view co the dung chung
         // kiem tra neu la trang chu (homepage moi hien thi slider anh)
         $data['homePage'] = Route::currentRouteName();
-        //dd($data['homePage']); 
+
+        // 3 popular posts
+        $popularPosts = $posts->getDataPopularPosts();
+        // chuyen ve mang
+        $popularPosts = ($popularPosts) ? $popularPosts->toArray() : [];
+        $data['popularPosts'] = $popularPosts;
 
     	View::share('info',$data);
     }

@@ -151,6 +151,8 @@ Route::group([
 	'as' => 'fr.'
 ],function(){
 	Route::get('/','HomeController@index')->name('home');
+	Route::get('{slug}~{id}','DetailController@index')->name('detail');
+	Route::get('lg/{id}','DetailController@updateView')->name('viewCount');
 });
 
 /******************* Routes blog admin *********************/
@@ -165,7 +167,6 @@ Route::group([
 	
 	Route::post('/handle-login', 'AccountController@handleLogin')->name('handleLogin');
 	Route::post('/logout','AccountController@logout')->name('logout');
-	
 });
 
 Route::group([

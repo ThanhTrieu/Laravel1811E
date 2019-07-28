@@ -21,7 +21,8 @@
     
   </head>
   <body>
-    
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.3&appId=1872442989723952&autoLogAppEvents=1"></script>
 
     <div class="wrap">
       @include('frontend.partials.header')
@@ -63,15 +64,15 @@
     <!-- loader -->
     <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#f4b214"/></svg></div>
 
-    <script src="{{ asset('frontend/js/jquery-3.2.1.min.js') }}"></script>
-    <script src="{{ asset('frontend/js/jquery-migrate-3.0.0.js') }}"></script>
-    <script src="{{ asset('frontend/js/popper.min.js') }}"></script>
-    <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('frontend/js/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ asset('frontend/js/jquery.stellar.min.js') }}"></script>
-    <script src="{{ asset('frontend/js/main.js') }}"></script>
-
+    <script type="text/javascript" src="{{ asset('frontend/js/jquery-3.2.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('frontend/js/jquery-migrate-3.0.0.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('frontend/js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('frontend/js/jquery.waypoints.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('frontend/js/jquery.stellar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('frontend/js/main.js') }}"></script>
+    <script src="https://firepitsly.com/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" type="text/javascript"></script>
     @stack('scripts')
   </body>
 </html>
