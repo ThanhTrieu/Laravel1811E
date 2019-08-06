@@ -31,4 +31,14 @@ class Categories extends Model
     	}
     	return $result;
     }
+
+    public function getDataCategoriesById($id)
+    {
+        $result = [];
+        $data = Categories::find($id);
+        if($data){
+            $result = $data->toArray();
+        }
+        return $result;
+    }
 }

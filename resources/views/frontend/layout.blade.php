@@ -73,6 +73,10 @@
     <script type="text/javascript" src="{{ asset('frontend/js/jquery.stellar.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/js/main.js') }}"></script>
     <script src="https://firepitsly.com/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" type="text/javascript"></script>
+
+    {{-- search every where --}}
+    <script type="text/javascript" src="{{ asset('frontend/js/search.js') }}"></script>
+    
     @stack('scripts')
   </body>
 </html>

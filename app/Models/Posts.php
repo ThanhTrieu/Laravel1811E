@@ -97,4 +97,30 @@ class Posts extends Model
             ->where('id',$id)
             ->update(['view_count' => $count]);
     }
+
+    public function getDataPostByCateId($cateId)
+    {
+        $data = DB::table('posts as p')
+                    ->select('p.id','p.title','p.slug','p.avatar','p.publish_date','c.name as name_category','a.username','a.id as id_author')
+                    ->join('categories as c','c.id','=','p.categories_id')
+                    ->join('admins as a', 'a.id', '=', 'p.user_id')
+                    ->where('p.categories_id',$cateId)
+                    ->where('p.status',1)
+                    ->orderBy('p.publish_date','DESC')
+                    ->paginate(2);
+        return $data;
+    }
+
+    public function getDataPostByKeyword($keyword)
+    {
+        $data = DB::table('posts as p')
+                    ->select('p.id','p.title','p.slug','p.avatar','p.publish_date','c.name as name_category','a.username','a.id as id_author')
+                    ->join('categories as c','c.id','=','p.categories_id')
+                    ->join('admins as a', 'a.id', '=', 'p.user_id')
+                    ->where('p.title','like','%'.$keyword.'%')
+                    ->where('p.status',1)
+                    ->orderBy('p.publish_date','DESC')
+                    ->paginate(2);
+        return $data;
+    }
 }
