@@ -1,7 +1,7 @@
 @extends('frontend.layout')
 
 @section('title', 'Home - blog')
-@section('lastest-post', 'Lastest post')
+@section('lastest-post', __('common.lastestPost'))
 
 @section('content')
 <div class="row">

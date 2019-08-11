@@ -1,5 +1,5 @@
 <div class="sidebar-box">
-  <h3 class="heading">Popular Posts</h3>
+  <h3 class="heading">@lang('common.popularPosts')</h3>
   <div class="post-entry-sidebar">
     <ul>
     @foreach($info['popularPosts'] as $key => $item)

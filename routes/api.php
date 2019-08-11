@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group([
+	'prefix' => 'v1',
+	'namespace' => 'API',
+	//'middleware'=>'auth:api'
+], function(){
+	// method GET
+	Route::resource('test','ServiceController')->only(['index','show','create']);
+
+	// method POST + PUT + DELETE
+	Route::resource('demo','ServiceController')->only(['store','update', 'destroy']);
+});

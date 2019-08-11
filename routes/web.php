@@ -17,6 +17,7 @@ Route::get('/', function () {
 });
 */
 
+
 Route::get('/home', function() {
 	// ::get() method cua routes - phuong thuc truy cap vao routes day
 	return "Hello word - home";
@@ -147,8 +148,10 @@ Route::group([
 
 /*************** Routes blog Frontend **********************/
 Route::group([
+	'prefix'=> LaravelLocalization::setLocale(),
 	'namespace' => 'Frontend',
-	'as' => 'fr.'
+	'as' => 'fr.',
+	'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ],function(){
 	Route::get('/','HomeController@index')->name('home');
 	Route::get('{slug}~{id}','DetailController@index')->name('detail');
@@ -156,6 +159,27 @@ Route::group([
 	Route::get('category/{slug}~{id}','CategoryController@index')->name('category');
 	Route::get('search','SearchController@index')->name('search');
 });
+
+/************** Switch language Frontend ****************/
+Route::get('/switch-language/{lang?}', function($lang = 'en'){
+	// set ngon ngu cho ung dung
+	App::setLocale($lang);
+
+	// gan vao session
+	Session::put('lang', $lang);
+
+	// set lai ngon ngu bang thu vien LaravelLocalization
+	LaravelLocalization::setLocale($lang);
+
+	// dieu huong quay ve dung trang ma nguoi dung dang o truoc khi bam link chuyen ngon ngu
+	// App::getLocale() : lay ra language dang duoc xet
+	$url = LaravelLocalization::getLocalizedURL(App::getLocale(), \URL::previous());
+
+	// quay ve trang truoc do
+	return Redirect::to($url);
+
+})->name('switchLang');
+
 
 /******************* Routes blog admin *********************/
 // Routes group - namespace - Prefixes of routes
@@ -184,5 +208,14 @@ Route::group([
 	Route::post('/delete-post','PostsController@deletePost')->name('deletePost');
 	Route::get('{slug}/{id}','PostsController@editPost')->name('editPost');
 	Route::post('handle-edit/{id}','PostsController@handleEdit')->name('handleEdit');
+});
+
+Route::group([
+	'prefix'=> LaravelLocalization::setLocale(),
+	'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+],function(){
+
+	Auth::routes();
+	Route::get('/home', 'HomeController@index')->name('home');
 });
 

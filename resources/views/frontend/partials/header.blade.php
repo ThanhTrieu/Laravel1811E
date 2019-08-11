@@ -8,8 +8,8 @@
           <a href="#"><span class="fa fa-instagram"></span></a>
           <a href="#"><span class="fa fa-youtube-play"></span></a>
           <span> | </span>
-          <a href="#"> English</a>
-          <a href="#"> Vietnamese</a>
+          <a href="{{ route('switchLang',['lang' => 'en']) }}"> English</a>
+          <a href="{{ route('switchLang', ['lang' => 'vi']) }}"> Vietnamese</a>
         </div>
         <div class="col-3 search-top">
           <!-- <a href="#"><span class="fa fa-search"></span></a> -->

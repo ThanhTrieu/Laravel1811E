@@ -65,6 +65,12 @@ class Kernel extends HttpKernel
         'testMiddlewareController' => \App\Http\Middleware\TestMiddlewareController::class,
         'adminLogined' => \App\Http\Middleware\CheckAdminIsLogined::class,
         'isAdminLogined' => \App\Http\Middleware\AdminIsLogined::class,
+        /**** OTHER MIDDLEWARE ****/
+        'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
+        'localizationRedirect' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
+        'localeSessionRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
+        'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
+        // REDIRECTION MIDDLEWARE
     ];
 
     /**

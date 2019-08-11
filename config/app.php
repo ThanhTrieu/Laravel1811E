@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\CategoryServiceProvider::class,
         App\Providers\LayoutBuildTreeCategoryServiceProvider::class,
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
 
     ],
 
@@ -229,7 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'BuildCategory' => App\Helpers\Category\BuildCategory::class,
         'BuildTreeCate' => App\Helpers\Common\BuildTreeCate::class,
-
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
     ],
 
 ];
